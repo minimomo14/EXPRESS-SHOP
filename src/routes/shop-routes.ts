@@ -1,6 +1,7 @@
 import express from "express";
 import Shop from "../models/Shop";
 const shopRoutes = express.Router();
+
 const shops: Shop[] = [
     { id: 111, name: "Pepper's Pizza", rating: 4.5 },
     { id: 222, name: "Clive's Chives", rating: 3.4 },
@@ -8,13 +9,17 @@ const shops: Shop[] = [
     { id: 444, name: "Sylvester's Shoes", rating: 3.8 },
     { id: 555, name: "Teddy's Tunes", rating: 4.7 }
 ];
+
 let nextId: number = 666;
+
 shopRoutes.get("/", function (req, res){
     res.render('home');
 });
+
 shopRoutes.get("/shop-list", function (req,res){
     res.render('shop-list', {shops});  
 });
+
 //Query ?minRating=4.0
 shopRoutes.get("/api/shop", function(req, res){
     let minRatingParam: string = req.query.minRating as string;
@@ -29,6 +34,7 @@ shopRoutes.get("/api/shop", function(req, res){
         res.json(shops);
     }
 });
+
 shopRoutes.post("/api/shop", function(req, res){
     let newShop: Shop = {id: nextId, name: req.body.name, rating: req.body.rating};
     // newShop.id = nextId;
@@ -37,6 +43,7 @@ shopRoutes.post("/api/shop", function(req, res){
     res.status(201);
     res.json(newShop);
 });
+
 shopRoutes.delete("/api/shop/:id", function(req, res){
     //use id parameter to delete the corresponding Shop object from shops []
     let inputId: number = Number.parseInt(req.params.id);
@@ -52,7 +59,7 @@ shopRoutes.delete("/api/shop/:id", function(req, res){
     res.json("");
 });
 
-shopRoutes.get("/api/shop/:id", function(req, res){
+shopRoutes.get("/:id", function(req, res){
     // req.params.id shops[i].id
     //search shop array
     for(let i=0; i<shops.length; i++){
@@ -65,7 +72,7 @@ shopRoutes.get("/api/shop/:id", function(req, res){
         }
     }
     res.status(404);
-    res.send({"error": "Shop not found"});
+    res.send({"Error": "Shop not found"});
 });
 
 
@@ -75,7 +82,7 @@ shopRoutes.get("/shop-details/:id", function (req, res) {
 	if (match) {
 		res.render("shop-details", { match });
 	} else {
-		res.status(404).render("404id", { idNum });
+		res.status(404).render("404", { idNum });
 	}
 });
 
