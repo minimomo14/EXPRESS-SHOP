@@ -12,13 +12,33 @@ const shops: Shop[] = [
 
 let nextId: number = 666;
 
+//GET /homepage
 shopRoutes.get("/", function (req, res){
     res.render('home');
 });
 
+//GET /shop-list
 shopRoutes.get("/shop-list", function (req,res){
     res.render('shop-list', {shops});  
 });
+
+//GET /shop-details/:id
+shopRoutes.get("/shop-details/:id", function (req, res) {
+	let idNum: number = parseInt(req.params.id);
+	let match = shops.find((shop) => shop.id === idNum);
+	if (match) {
+		res.render("shop-details", { match });
+	} else {
+		res.status(404).render("404", {idNum});
+	}
+});
+
+//GET /search-form
+shopRoutes.get("/shop-search-form/:id", function (req,res) {
+    res.render('shop-search-form');
+});
+
+
 
 //Query ?minRating=4.0
 shopRoutes.get("/api/shop", function(req, res){
@@ -75,15 +95,5 @@ shopRoutes.get("/:id", function(req, res){
     res.send({"Error": "Shop not found"});
 });
 
-
-shopRoutes.get("/shop-details/:id", function (req, res) {
-	let idNum: number = parseInt(req.params.id);
-	let match = shops.find((shop) => shop.id === idNum);
-	if (match) {
-		res.render("shop-details", { match });
-	} else {
-		res.status(404).render("404", { idNum });
-	}
-});
 
 export default shopRoutes;

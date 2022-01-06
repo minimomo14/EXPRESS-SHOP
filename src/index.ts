@@ -23,7 +23,10 @@ app.use(express.json())
 
 //routes files
 app.use("/", shopRoutes); //localhost:3000
-app.use("/api/shop",shopRoutes)
+app.use("/api/shop",shopRoutes);
+//app.use("/shop-list",shopRoutes);
+//app.use("/shop-details", shopRoutes);
+//app.use("/shop-search-form", shopRoutes);
  
 // define the port
 const port = 3000;
